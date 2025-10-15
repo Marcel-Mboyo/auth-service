@@ -153,6 +153,21 @@
 			<version>2.15.2</version>
 		</dependency>
 
+		<!-- MicroProfile OpenAPI pour génération automatique de documentation -->
+		<dependency>
+			<groupId>org.eclipse.microprofile.openapi</groupId>
+			<artifactId>microprofile-openapi-api</artifactId>
+			<version>3.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Swagger UI (optionnel, pour interface graphique) -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>swagger-ui</artifactId>
+			<version>5.10.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
@@ -195,6 +210,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -204,6 +220,100 @@
 				</configuration>
 			</plugin>
 
+			<!-- Plugin WAR existant -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.2</version>
+			</plugin>
+
+			<!-- Plugin JavaDoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.2</version>
+				<configuration>
+					<show>private</show>
+					<nohelp>true</nohelp>
+					<charset>UTF-8</charset>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+					<source>11</source>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
+					<!-- Configuration du rapport -->
+					<doctitle>Auth Service API Documentation</doctitle>
+					<windowtitle>Auth Service API</windowtitle>
+					<header><![CDATA[<b>Auth Service v1.0</b>]]></header>
+					<bottom><![CDATA[Copyright &#169; 2024 Archer CBS. All Rights Reserved.]]></bottom>
+					<!-- Liens externes -->
+					<links>
+						<link>https://jakarta.ee/specifications/platform/10/apidocs/</link>
+						<link>https://javadoc.io/doc/io.jsonwebtoken/jjwt-api/latest/</link>
+					</links>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Plugin pour générer un site de documentation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>4.0.0-M11</version>
+			</plugin>
+
+			<!-- Plugin pour rapport de projet -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.4.5</version>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.2</version>
+				<configuration>
+					<show>public</show>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.4.5</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>summary</report>
+							<report>dependency-info</report>
+							<report>modules</report>
+							<report>team</report>
+							<report>scm</report>
+							<report>issue-management</report>
+							<report>licenses</report>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>plugins</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
 </project>
